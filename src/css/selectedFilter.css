@@ -1,0 +1,16 @@
+.selectedFilter {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 5px;
+    cursor: pointer;
+    width: auto;
+}
+
+.selectedFilter > * {
+    cursor: pointer;
+}
+
+.removeFilterIcon {
+    margin-left: 5px;
+    font-size: 9px;
+}
