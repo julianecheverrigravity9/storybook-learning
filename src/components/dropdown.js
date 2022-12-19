@@ -45,17 +45,17 @@ const Dropdown = ({ placeHolder, options, setData }) => {
     useDropdownBehaviorHandler(wrapperRef);
 
     return (
-        <div className="dropdown-container">
+        <div className="dropdown-container" ref={wrapperRef}>
             <div className="dropdown-placeHolder" onClick={handleInputClick}>
                 <label>
                     {placeHolder}
                 </label>
                 <i className={(showMenu ? "dropdown-icon fas fa-angle-up" : "dropdown-icon fas fa-angle-down")}></i>
             </div>
-            <div className="dropdown-menu" ref={wrapperRef}>
+            <div className="dropdown-menu" >
                 {showMenu && (
                     options?.map(option => (
-                        <div key={option.value} className="dropdown-item">
+                        <div key={option.value} className="dropdown-item" >
                             <input type="checkbox"
                                 name={option.label}
                                 value={option.value}
