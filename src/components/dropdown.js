@@ -28,11 +28,10 @@ const Dropdown = ({ placeHolder, options, setData }) => {
     };
 
     const handleSelectedItem = (option, e) => {
-        option.selected = e.target.checked === undefined ? false : e.target.checked;
-
         const newState = options?.map(obj => {
             if (obj.value === option.value) {
-                return option;
+                obj.selected = e.target.checked === undefined ? false : e.target.checked;
+                return obj;
             }
 
             return obj;

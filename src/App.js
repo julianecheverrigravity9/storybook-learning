@@ -10,12 +10,24 @@ function App() {
   const [itemsSelected, setItemsSelected] = useState([]);
 
   useEffect(() => {
-    let topicsSelected = topicsState?.filter(x => x.selected);
-    let anotherTopicsSelected = anotherTopicsState?.filter(x => x.selected);
+    const topicsSelected = topicsState?.filter(x => x.selected);
+    if (topicsSelected.length > 0) {
+      updateItemsSelected(topicsSelected);
+    }
+  }, [topicsState]);
 
-    setItemsSelected([...topicsSelected, ...anotherTopicsSelected]);
+  useEffect(() => {
+    const anotherTopicsSelected = anotherTopicsState?.filter(x => x.selected);
+    if (anotherTopicsSelected.length > 0) {
+      updateItemsSelected(anotherTopicsSelected);
+    }
+  }, [anotherTopicsState]);
 
-  }, [topicsState, anotherTopicsState]);
+  const updateItemsSelected = (items) => {
+    let selected = itemsSelected.concat(items);
+    selected = [...new Set([...itemsSelected, ...items])]
+    setItemsSelected(selected);
+  }
 
   return (
     <div className='main-container'>
@@ -23,7 +35,7 @@ function App() {
         <Dropdown placeHolder={"Topic"} setData={setTopics} options={topicsState} />
         <Dropdown placeHolder={"Another topics"} setData={setAnotherTopics} options={anotherTopicsState} />
         <div className='filters'>
-          <SelectedFilterList data={itemsSelected} />
+          <SelectedFilterList data={itemsSelected.filter(x => x.selected)} setData={setItemsSelected} />
         </div>
       </div>
       <div className='results'>
