@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 
 import "../css/dropdown.css";
 
@@ -9,6 +9,23 @@ const Dropdown = ({ placeHolder, options, setData }) => {
         e.stopPropagation();
         setShowMenu(!showMenu);
     }
+
+    const useDropdownBehaviorHandler = (ref) => {
+        useEffect(() => {
+            const handleClickOutside = (event) => {
+                if (ref.current && !ref.current.contains(event.target)) {
+                    setShowMenu(false);
+                }
+            }
+
+            document.addEventListener("mousedown", handleClickOutside);
+
+            return () => {
+                document.removeEventListener("mousedown", handleClickOutside);
+            };
+
+        }, [ref]);
+    };
 
     const handleSelectedItem = (option, e) => {
         option.selected = e.target.checked === undefined ? false : e.target.checked;
@@ -24,6 +41,9 @@ const Dropdown = ({ placeHolder, options, setData }) => {
         setData(newState);
     };
 
+    const wrapperRef = useRef(null);
+    useDropdownBehaviorHandler(wrapperRef);
+
     return (
         <div className="dropdown-container">
             <div className="dropdown-placeHolder" onClick={handleInputClick}>
@@ -32,7 +52,7 @@ const Dropdown = ({ placeHolder, options, setData }) => {
                 </label>
                 <i className={(showMenu ? "dropdown-icon fas fa-angle-up" : "dropdown-icon fas fa-angle-down")}></i>
             </div>
-            <div className="dropdown-menu">
+            <div className="dropdown-menu" ref={wrapperRef}>
                 {showMenu && (
                     options?.map(option => (
                         <div key={option.value} className="dropdown-item">
